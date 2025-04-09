@@ -24,9 +24,7 @@ def sample_json_file():
         }
     ]
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf8", delete=False, suffix=".json"
-    ) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf8", delete=False, suffix=".json") as tmp:
         json.dump(test_data, tmp, ensure_ascii=False)
         tmp_path = tmp.name
 

@@ -1,5 +1,5 @@
 import json
-from typing import List, Dict, Any
+from typing import List
 
 
 class Product:
@@ -19,7 +19,9 @@ class Product:
 
     def __str__(self) -> str:
         """Возвращает строковое представление товара"""
-        return f"Product(name={self.name}, description={self.description}, price={self.price}, quantity={self.quantity})"
+        return (
+            f"Product(name={self.name}, description={self.description}, price={self.price}, quantity={self.quantity})"
+        )
 
     def __repr__(self) -> str:
         """Возвращает формальное строковое представление товара"""
