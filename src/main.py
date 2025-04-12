@@ -14,18 +14,45 @@ class Product:
         """Инициализирует экземпляр класса Product"""
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
 
-    def __str__(self) -> str:
-        """Возвращает строковое представление товара"""
-        return (
-            f"Product(name={self.name}, description={self.description}, price={self.price}, quantity={self.quantity})"
-        )
+    @property
+    def price(self) -> float:
+        """Геттер для цены"""
+        return self.__price
 
-    def __repr__(self) -> str:
-        """Возвращает формальное строковое представление товара"""
-        return self.__str__()
+    @price.setter
+    def price(self, new_price: float) -> None:
+        """Сеттер для цены"""
+        if new_price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+            return
+
+        if new_price < self.__price:
+            answer = input(f"Понизить цену с {self.__price} до {new_price}")
+            if answer != "y":
+                print("Отмена действия")
+                return
+        self.__price = new_price
+        print("Цена успешно изменена")
+
+    @classmethod
+    def new_product(cls, product_data: dict, products: list["Product"] = None) -> "Product":
+        """Создает новый товар из словаря с данными"""
+        if products is None:
+            products = []
+        for product in products:
+            if product.name == product_data["name"]:
+                product.quantity += product_data["quantity"]
+                product.price == max(product.price, product_data["price"])
+                return product
+        return cls(
+            name=product_data["name"],
+            description=product_data["description"],
+            price=float(product_data["price"]),
+            quantity=int(product_data["quantity"]),
+        )
 
 
 class Category:
@@ -42,18 +69,19 @@ class Category:
         """Инициализирует экземпляр класса Category"""
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = products
         Category.category_count += 1
         Category.product_count = len(products)
 
-    def __str__(self) -> str:
-        """Возвращает строковое представление категории"""
-        products_str = "\n".join(f"  - {product}" for product in self.products)
-        return f"Категория: {self.name}\n{self.description}\nТовары:\n{products_str}"
+    def add_product(self, product_obj: Product) -> None:
+        """Добавление товарок в категорию"""
+        self.__products.append(product_obj)
+        Category.category_count += 1
 
-    def __repr__(self) -> str:
-        """Возвращает формальное строковое представление категории"""
-        return f"Category({self.name!r}, {self.description!r}, {self.products!r})"
+    @property
+    def add_product(self) -> list:
+        """Формируем вывод списка товаров"""
+        return [f"{p.name}, {p.price}. Остаток: {p.quantity}." for p in self.__products]
 
 
 def load_data_from_json(file_path: str) -> List[Category]:
