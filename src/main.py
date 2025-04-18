@@ -16,6 +16,15 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+        self.multiplication = price * quantity
+
+    def __str__(self) -> str:
+        """Строковое отображение"""
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other: "Product") -> float:
+        """Сложение цены всего товара"""
+        return self.multiplication + other.multiplication
 
     @property
     def price(self) -> float:
@@ -45,7 +54,7 @@ class Product:
         for product in products:
             if product.name == product_data["name"]:
                 product.quantity += product_data["quantity"]
-                product.price == max(product.price, product_data["price"])
+                product.price = max(product.price, product_data["price"])
                 return product
         return cls(
             name=product_data["name"],
@@ -65,13 +74,18 @@ class Category:
     category_count = 0
     product_count = 0
 
-    def __init__(self, name: str, description: str, products: List[Product]) -> None:
+    def __init__(self, name: str, description: str, products: list[Product]) -> None:
         """Инициализирует экземпляр класса Category"""
         self.name = name
         self.description = description
         self.__products = products
         Category.category_count += 1
         Category.product_count = len(products)
+        self.total_quantity = sum(product.quantity for product in products)
+
+    def __str__(self) -> str:
+        """Строковое отображение"""
+        return f"{self.name}, количество продуктов: {self.total_quantity} шт."
 
     def add_product(self, product_obj: Product) -> None:
         """Добавление товарок в категорию"""
@@ -79,12 +93,12 @@ class Category:
         Category.category_count += 1
 
     @property
-    def add_product(self) -> list:
+    def products(self) -> list:
         """Формируем вывод списка товаров"""
         return [f"{p.name}, {p.price}. Остаток: {p.quantity}." for p in self.__products]
 
 
-def load_data_from_json(file_path: str) -> List[Category]:
+def load_data_from_json(file_path: str) -> list[Category]:
     """Загружает данные из JSON файла и создает объекты Category и Product"""
     try:
         with open(file_path, "r", encoding="utf-8") as file:

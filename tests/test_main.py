@@ -39,10 +39,10 @@ def test_load_data_success(sample_json_file: str) -> None:
 
     assert len(categories) == 1
     assert categories[0].name == "Тестовая категория"
-    assert len(categories[0].add_product) == 1
-    assert "Тестовый товар" in categories[0].add_product[0]
-    assert "100.0" in categories[0].add_product[0]
-    assert "5" in categories[0].add_product[0]
+    assert len(categories[0].products) == 1
+    assert "Тестовый товар" in categories[0].products[0]
+    assert "100.0" in categories[0].products[0]
+    assert "5" in categories[0].products[0]
 
 
 def test_load_nonexistent_file() -> None:
@@ -82,7 +82,7 @@ def test_missing_required_field() -> None:
 def test_empty_products_list() -> None:
     """Тест работы с пустым списком товаров."""
     category = Category("Категория", "Описание", [])
-    assert len(category.add_product) == 0
+    assert len(category.products) == 0
 
 
 def test_multiple_products():
@@ -90,9 +90,9 @@ def test_multiple_products():
     p1 = Product("Товар1", "Описание1", 100, 1)
     p2 = Product("Товар2", "Описание2", 200, 2)
     category = Category("Категория", "Описание", [p1, p2])
-    assert len(category.add_product) == 2
-    assert "Товар1" in category.add_product[0]
-    assert "Товар2" in category.add_product[1]
+    assert len(category.products) == 2
+    assert "Товар1" in category.products[0]
+    assert "Товар2" in category.products[1]
 
 
 def test_product_price_setter() -> None:
@@ -121,3 +121,27 @@ def test_new_product_method() -> None:
 
     new_product = Product.new_product(new_data)
     assert new_product.name == "Существующий"
+
+
+def test_string_mapping_product() -> None:
+    """Текст метода __str__ Product"""
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    assert str(product1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_string_mapping_category() -> None:
+    """Текст метода __str__ Category"""
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    category1 = Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        [product1],
+    )
+    assert str(category1) == "Смартфоны, количество продуктов: 5 шт."
+
+
+def test_multiplication() -> None:
+    """Тест на сложение цены всего товара"""
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    assert product1 + product2 == 2580000.0
