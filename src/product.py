@@ -20,9 +20,10 @@ class Product:
 
     def __add__(self, other: "Product") -> float:
         """Сложение цены товара"""
-        if type(self) != type(other):
+        if type(self) is not type(other):
             raise TypeError
         return self.multiplication + other.multiplication
+
     @property
     def price(self) -> float:
         """Геттер для цены"""
@@ -62,15 +63,35 @@ class Product:
 
 
 class Smartphone(Product):
-    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: float, model: str, memory: int, color: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
 
+
 class LawnGrass(Product):
-    def __init__(self, name: str, description: str, price: float, quantity: int, country: str, germination_period: str, color: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ) -> None:
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period

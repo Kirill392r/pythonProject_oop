@@ -1,6 +1,8 @@
 import json
-from src.product import Product
+
 from src.category import Category
+from src.product import Product
+
 
 def load_data_from_json(file_path: str) -> list[Category]:
     """Загружает данные из JSON файла и создает объекты Category и Product"""

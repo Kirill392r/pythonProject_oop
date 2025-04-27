@@ -5,8 +5,9 @@ import tempfile
 import pytest
 
 from src.category import Category
-from src.product import Product, Smartphone, LawnGrass
 from src.load_json import load_data_from_json
+from src.product import LawnGrass, Product, Smartphone
+
 
 @pytest.fixture
 def sample_json_file() -> str:
@@ -143,8 +144,9 @@ def test_string_mapping_category() -> None:
 
 def test_multiplication() -> None:
     """Тест на сложение цены товара"""
-    smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
-                             "S23 Ultra", 256, "Серый")
+    smartphone1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
     grass1 = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
