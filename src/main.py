@@ -1,120 +1,84 @@
-import json
-from typing import List
+from src.category import Category
+from src.product import LawnGrass, Smartphone
 
+if __name__ == "__main__":
+    smartphone1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
+    smartphone2 = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+    smartphone3 = Smartphone("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14, 90.3, "Note 11", 1024, "Синий")
 
-class Product:
-    """Класс для представления товара в магазине"""
+    print(smartphone1.name)
+    print(smartphone1.description)
+    print(smartphone1.price)
+    print(smartphone1.quantity)
+    print(smartphone1.efficiency)
+    print(smartphone1.model)
+    print(smartphone1.memory)
+    print(smartphone1.color)
 
-    name: str
-    description: str
-    price: float
-    quantity: int
+    print(smartphone2.name)
+    print(smartphone2.description)
+    print(smartphone2.price)
+    print(smartphone2.quantity)
+    print(smartphone2.efficiency)
+    print(smartphone2.model)
+    print(smartphone2.memory)
+    print(smartphone2.color)
 
-    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
-        """Инициализирует экземпляр класса Product"""
-        self.name = name
-        self.description = description
-        self.__price = price
-        self.quantity = quantity
+    print(smartphone3.name)
+    print(smartphone3.description)
+    print(smartphone3.price)
+    print(smartphone3.quantity)
+    print(smartphone3.efficiency)
+    print(smartphone3.model)
+    print(smartphone3.memory)
+    print(smartphone3.color)
 
-    @property
-    def price(self) -> float:
-        """Геттер для цены"""
-        return self.__price
+    grass1 = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+    grass2 = LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
 
-    @price.setter
-    def price(self, new_price: float) -> None:
-        """Сеттер для цены"""
-        if new_price <= 0:
-            print("Цена не должна быть нулевая или отрицательная")
-            return
+    print(grass1.name)
+    print(grass1.description)
+    print(grass1.price)
+    print(grass1.quantity)
+    print(grass1.country)
+    print(grass1.germination_period)
+    print(grass1.color)
 
-        if new_price < self.__price:
-            answer = input(f"Понизить цену с {self.__price} до {new_price}")
-            if answer != "y":
-                print("Отмена действия")
-                return
-        self.__price = new_price
-        print("Цена успешно изменена")
+    print(grass2.name)
+    print(grass2.description)
+    print(grass2.price)
+    print(grass2.quantity)
+    print(grass2.country)
+    print(grass2.germination_period)
+    print(grass2.color)
 
-    @classmethod
-    def new_product(cls, product_data: dict, products: list["Product"] = None) -> "Product":
-        """Создает новый товар из словаря с данными"""
-        if products is None:
-            products = []
-        for product in products:
-            if product.name == product_data["name"]:
-                product.quantity += product_data["quantity"]
-                product.price == max(product.price, product_data["price"])
-                return product
-        return cls(
-            name=product_data["name"],
-            description=product_data["description"],
-            price=float(product_data["price"]),
-            quantity=int(product_data["quantity"]),
-        )
+    smartphone_sum = smartphone1 + smartphone2
+    print(smartphone_sum)
 
+    grass_sum = grass1 + grass2
+    print(grass_sum)
 
-class Category:
-    """Класс для представления категории товаров в магазине"""
-
-    name: str
-    description: str
-    products: List[Product]
-
-    category_count = 0
-    product_count = 0
-
-    def __init__(self, name: str, description: str, products: List[Product]) -> None:
-        """Инициализирует экземпляр класса Category"""
-        self.name = name
-        self.description = description
-        self.__products = products
-        Category.category_count += 1
-        Category.product_count = len(products)
-
-    def add_product(self, product_obj: Product) -> None:
-        """Добавление товарок в категорию"""
-        self.__products.append(product_obj)
-        Category.category_count += 1
-
-    @property
-    def add_product(self) -> list:
-        """Формируем вывод списка товаров"""
-        return [f"{p.name}, {p.price}. Остаток: {p.quantity}." for p in self.__products]
-
-
-def load_data_from_json(file_path: str) -> List[Category]:
-    """Загружает данные из JSON файла и создает объекты Category и Product"""
     try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            data = json.load(file)
+        invalid_sum = smartphone1 + grass1
+    except TypeError:
+        print("Возникла ошибка TypeError при попытке сложения")
+    else:
+        print("Не возникла ошибка TypeError при попытке сложения")
 
-        categories = []
+    category_smartphones = Category("Смартфоны", "Высокотехнологичные смартфоны", [smartphone1, smartphone2])
+    category_grass = Category("Газонная трава", "Различные виды газонной травы", [grass1, grass2])
 
-        for category_data in data:
-            products = []
-            for product_data in category_data["products"]:
-                product = Product(
-                    name=product_data["name"],
-                    description=product_data["description"],
-                    price=float(product_data["price"]),
-                    quantity=int(product_data["quantity"]),
-                )
-                products.append(product)
+    category_smartphones.add_product(smartphone3)
 
-            category = Category(
-                name=category_data["name"],
-                description=category_data["description"],
-                products=products,
-            )
-            categories.append(category)
+    print(category_smartphones.products)
 
-        return categories
+    print(Category.product_count)
 
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Файл {file_path} не найден")
-    except json.JSONDecodeError:
-        raise ValueError("Ошибка декодирования JSON файла")
-    except KeyError as e:
-        raise KeyError(f"Отсутствует обязательное поле в данных: {e}")
+    try:
+        category_smartphones.add_product("Not a product")
+    except TypeError:
+        print("Возникла ошибка TypeError при добавлении не продукта")
+    else:
+        print("Не возникла ошибка TypeError при добавлении не продукта")
