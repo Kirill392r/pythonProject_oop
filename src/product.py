@@ -1,4 +1,8 @@
-class Product:
+from src.base_task import BaseProduct
+from src.mixin_product import ProductMixin
+
+
+class Product(ProductMixin, BaseProduct):
     """Класс для представления товара в магазине"""
 
     name: str
@@ -13,6 +17,10 @@ class Product:
         self.__price = price
         self.quantity = quantity
         self.multiplication = price * quantity
+        super().__init__(name, description, price, quantity)
+
+    def __repr__(self):
+        return f"({self.name}, {self.description}, {self.__price}, {self.quantity})"
 
     def __str__(self) -> str:
         """Строковое отображение"""
