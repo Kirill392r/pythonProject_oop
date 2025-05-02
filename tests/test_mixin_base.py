@@ -11,6 +11,7 @@ def test_correct_parameters(capsys) -> None:
         == "Создан объект Product с параметрами: ('Samsung Galaxy S23 Ultra', '256GB, Серый цвет, 200MP камера', 180000.0, 5)"
     )
 
+
 def test_base_product_implementation() -> None:
     product = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
     assert isinstance(product, BaseProduct)
