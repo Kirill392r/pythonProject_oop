@@ -184,7 +184,7 @@ def test_middle_price() -> None:
     assert category1.middle_price() == 15592.6
 
 
-def test_middle_price_none_product():
+def test_middle_price_none_product() -> None:
     """Тест с подсчётом средней цены товара с пустым списком продуктов"""
     category_empty = Category("Пустая категория", "Категория без продуктов", [])
     assert category_empty.middle_price() == 0
