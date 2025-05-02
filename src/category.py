@@ -44,6 +44,12 @@ class Category(BaseEntity):
         """Реализация абстрактного метода - общая стоимость всех товаров категории"""
         return sum(p.price * p.quantity for p in self.__products)
 
+    def middle_price(self):
+        try:
+            return round((sum(p.price for p in self.__products) / sum(p.quantity for p in self.__products)), 1)
+        except ZeroDivisionError:
+            return 0
+
 
 class Order(BaseEntity):
     """Класс для представления заказа"""
